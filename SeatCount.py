@@ -113,3 +113,14 @@ for line_data in csv_reader: # iterates for each object
         object_coordinates_list = []
         frame_count += 1
 
+csv_reader.close()
+csv_writer = open('OutputData.csv', 'w')
+
+data_dict_line ={}
+
+for data_dict_line in seat_occupied_list:
+    csv_writer.write(str(data_dict_line))
+
+csv_writer.close()
+
+
