@@ -1,11 +1,11 @@
 
-target_coordinates = {'X1': 0, 'Y1': 0, 'X2': 0, 'Y2': 0}  # Dictionary to store coordinates of target square
+target_coordinates = {'X1': 0.0, 'Y1': 0.0, 'X2': 0.0, 'Y2': 0.0}  # Dictionary to store coordinates of target square
 
 # defining the coordinates for the seat locations for test video
-seat1_coordinates = {'X1': 1516, 'X2': 1950, 'Y1': 643, 'Y2': 1263}
-seat2_coordinates = {'X1': 1556, 'X2': 2152, 'Y1': 1042, 'Y2': 1440}
-seat3_coordinates = {'X1': 278, 'X2': 853, 'Y1': 725, 'Y2': 1415}
-seat4_coordinates = {'X1': 579, 'X2': 927, 'Y1': 495, 'Y2': 1024}
+seat1_coordinates = {'X1': 1516.0, 'X2': 1950.0, 'Y1': 643.0, 'Y2': 1263.0}
+seat2_coordinates = {'X1': 1556.0, 'X2': 2152.0, 'Y1': 1042.0, 'Y2': 1440.0}
+seat3_coordinates = {'X1': 278.0, 'X2': 853.0, 'Y1': 725.0, 'Y2': 1415.0}
+seat4_coordinates = {'X1': 579.0, 'X2': 927.0, 'Y1': 495.0, 'Y2': 1024.0}
 
 # print(target_coordinates['X1'])
 
@@ -54,16 +54,16 @@ for line_data in csv_reader: # iterates for each object
         object_coordinates_list.append(target_coordinates)  # appending object coordinates to list. This list is cleared every new frame
 
     elif line_data[0] == 'b':  # Denotes the start of a new frame with the word box_points
-        frame_object_coordinates_list[frame_count] = object_coordinates_list
+        frame_object_coordinates_list.append(object_coordinates_list)
 
         # By the time we execute below here, all objects in the frame are in the list frame_object_coordinates_list
         # Looping through each object to identify error against each seat
         for object_coordinate in target_coordinates:
 
-            seat1_error = (object_coordinate['X1'] - seat1_coordinates['X1'])^2 + (object_coordinate['Y1'] - seat1_coordinates['Y1'])^2 + (object_coordinate['X2'] - seat1_coordinates['X2'])^2 (object_coordinate['Y2'] - seat1_coordinates['Y2'])^2
-            seat2_error = (object_coordinate['X1'] - seat2_coordinates['X1'])^2 + (object_coordinate['Y1'] - seat2_coordinates['Y1'])^2 + (object_coordinate['X2'] - seat2_coordinates['X2'])^2 (object_coordinate['Y2'] - seat2_coordinates['Y2'])^2
-            seat3_error = (object_coordinate['X1'] - seat3_coordinates['X1'])^2 + (object_coordinate['Y1'] - seat3_coordinates['Y1'])^2 + (object_coordinate['X2'] - seat3_coordinates['X2'])^2 (object_coordinate['Y2'] - seat3_coordinates['Y2'])^2
-            seat4_error = (object_coordinate['X1'] - seat4_coordinates['X1'])^2 + (object_coordinate['Y1'] - seat4_coordinates['Y1'])^2 + (object_coordinate['X2'] - seat4_coordinates['X2'])^2 (object_coordinate['Y2'] - seat4_coordinates['Y2'])^2
+            seat1_error = (object_coordinate.get('X1') - seat1_coordinates.get('X1'))**2 + (object_coordinate.get('Y1') - seat1_coordinates.get('Y1'))**2 + (object_coordinate.get('X2') - seat1_coordinates.get('X2'))**2 (object_coordinate.get('Y2') - seat1_coordinates.get('Y2'))**2
+            seat2_error = (object_coordinate.get('X1') - seat2_coordinates.get('X1'))**2 + (object_coordinate.get('Y1') - seat2_coordinates.get('Y1'))**2 + (object_coordinate.get('X2') - seat2_coordinates.get('X2'))**2 (object_coordinate.get('Y2') - seat2_coordinates.get('Y2'))**2
+            seat3_error = (object_coordinate.get('X1') - seat3_coordinates.get('X1'))**2 + (object_coordinate.get('Y1') - seat3_coordinates.get('Y1'))**2 + (object_coordinate.get('X2') - seat3_coordinates.get('X2'))**2 (object_coordinate.get('Y2') - seat3_coordinates.get('Y2'))**2
+            seat4_error = (object_coordinate.get('X1') - seat4_coordinates.get('X1'))**2 + (object_coordinate.get('Y1') - seat4_coordinates.get('Y1'))**2 + (object_coordinate.get('X2') - seat4_coordinates.get('X2'))**2 (object_coordinate.get('Y2') - seat4_coordinates.get('Y2'))**2
 
             seat_error_dict = {'Seat 1': seat1_error, 'Seat 2': seat2_error, 'Seat 3':seat3_error, 'Seat 4': seat4_error}
             seat_min_error = min(seat1_error,seat2_error,seat3_error,seat4_error)  # get minimum error and seat number
@@ -71,28 +71,28 @@ for line_data in csv_reader: # iterates for each object
 
             # Checking which seat has the minimum error for that particular object (could be occupied)
             if seat_error_dict.get(min(seat_error_dict)) == 'Seat 1':
-                coordinate_error_ratio = rms_coordinate_error / ((seat1_coordinates['X1'] ^ 2 + seat1_coordinates['Y1'] ^ 2 + seat1_coordinates['X2'] ^ 2 + seat1_coordinates['Y2'] ^ 2)**0.5)
+                coordinate_error_ratio = rms_coordinate_error / ((seat1_coordinates.get('X1') ** 2 + seat1_coordinates.get('Y1') ** 2 + seat1_coordinates.get('X2') ** 2 + seat1_coordinates.get('Y2') ** 2)**0.5)
                 if coordinate_error_ratio < error_threshold:   # checking if the seat is actually occupied
                     seat1_occupied = True
                 else:
                     seat1_occupied = False
 
             elif seat_error_dict.get(min(seat_error_dict)) == 'Seat 2':
-                coordinate_error_ratio = rms_coordinate_error / ((seat2_coordinates['X1'] ^ 2 + seat2_coordinates['Y1'] ^ 2 + seat2_coordinates['X2'] ^ 2 + seat2_coordinates['Y2'] ^ 2)**0.5)
+                coordinate_error_ratio = rms_coordinate_error / ((seat2_coordinates.get('X1') ** 2 + seat2_coordinates.get('Y1') ** 2 + seat2_coordinates.get('X2') ** 2 + seat2_coordinates.get('Y2') ** 2)**0.5)
                 if coordinate_error_ratio < error_threshold:   # checking if the seat is actually occupied
                     seat2_occupied = True
                 else:
                     seat2_occupied = False
 
             elif seat_error_dict.get(min(seat_error_dict)) == 'Seat 3':
-                coordinate_error_ratio = rms_coordinate_error / ((seat3_coordinates['X1'] ^ 2 + seat3_coordinates['Y1'] ^ 2 + seat3_coordinates['X2'] ^ 2 + seat3_coordinates['Y2'] ^ 2)**0.5)
+                coordinate_error_ratio = rms_coordinate_error / ((seat3_coordinates.get('X1') ** 2 + seat3_coordinates.get('Y1') ** 2 + seat3_coordinates.get('X2') ** 2 + seat3_coordinates.get('Y2') ** 2)**0.5)
                 if coordinate_error_ratio < error_threshold:   # checking if the seat is actually occupied
                     seat3_occupied = True
                 else:
                     seat3_occupied = False
 
             elif seat_error_dict.get(min(seat_error_dict)) == 'Seat 4':
-                coordinate_error_ratio = rms_coordinate_error / ((seat4_coordinates['X1'] ^ 2 + seat4_coordinates['Y1'] ^ 2 + seat4_coordinates['X2'] ^ 2 + seat4_coordinates['Y2'] ^ 2)**0.5)
+                coordinate_error_ratio = rms_coordinate_error / ((seat4_coordinates.get('X1') ** 2 + seat4_coordinates.get('Y1') ** 2 + seat4_coordinates.get('X2') ** 2 + seat4_coordinates.get('Y2') ** 2)**0.5)
                 if coordinate_error_ratio < error_threshold:   # checking if the seat is actually occupied
                     seat4_occupied = True
                 else:
