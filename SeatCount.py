@@ -1,5 +1,5 @@
 
-target_coordinates = {'X1': 0, 'Y1': 0,'X2': 0,'Y2': 0} # Dictionary to store coordinates of target square
+target_coordinates = {'X1': 0, 'Y1': 0, 'X2': 0, 'Y2': 0}  # Dictionary to store coordinates of target square
 
 # defining the coordinates for the seat locations for test video
 seat1_coordinates = {'X1': 1516, 'X2': 1950, 'Y1': 643, 'Y2': 1263}
@@ -94,7 +94,11 @@ for line_data in csv_reader: # iterates for each object
                     seat4_occupied = True
                 else:
                     seat4_occupied = False
-
+            else:
+                seat1_occupied = False
+                seat2_occupied = False
+                seat3_occupied = False
+                seat4_occupied = False
         object_coordinates_list = []
         frame_count += 1
 
